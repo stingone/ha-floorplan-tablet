@@ -9,6 +9,7 @@ A full-screen tablet dashboard for Home Assistant built on `picture-elements` wi
 ## Preview
 
 ![Dashboard Preview](assets/preview.gif)
+
 ---
 
 ## Features
@@ -277,7 +278,9 @@ config/
 
 ## Credits
 
-Based on the excellent work of [NdR91](https://github.com/NdR91) and his [NdR-FloorplanUI](https://github.com/NdR91/NdR-FloorplanUI) whose floorplan dashboard was the original inspiration. This version is a significantly simplified rebuild with three key differences: reusable `button_card_templates` for sidebar elements instead of duplicating configuration across every view; all `card_mod` styling updated to current standards (using CSS variables like `--ha-card-background` instead of legacy overrides); and a cleaner overall structure that is easier to maintain and adapt.
+The original concept was created by [lukevink](https://github.com/lukevink) ([hass-config-lajv](https://github.com/lukevink/hass-config-lajv)) and later built upon by [NdR91](https://github.com/NdR91) in his [NdR-FloorplanUI](https://github.com/NdR91/NdR-FloorplanUI). Both have been a great source of inspiration.
+
+This version is a significantly simplified rebuild with three key differences: reusable `button_card_templates` for sidebar elements instead of duplicating configuration across every view; all `card_mod` styling updated to current standards (using CSS variables like `--ha-card-background` instead of legacy overrides); and navigation buttons are now defined in YAML with icons and styles instead of custom PNG images, making them much easier to customise. The sidebar also blends into the floorplan via a gradient fade instead of having a hard edge.
 
 ---
 
