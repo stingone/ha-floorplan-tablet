@@ -1,0 +1,56 @@
+# sensor_floorplan.yaml
+# Package containing all template sensors used by the dashboard (ndr_floorplan.yaml)
+#
+# Sensors:
+#   date_string      — Formatted date string for the sidebar (e.g. "Maandag, 12 Mei 2026")
+#   sunlight_pct     — Sunlight percentage based on sun elevation and cloud coverage (Pirateweather)
+#   sunlight_opacity — Opacity value (0.0-1.0) used for day/night floorplan overlay
+#
+# Note: sunlight_pct uses weather.pirateweather for cloud_coverage because
+#       weather.buienradar does not provide this attribute.
+
+template:
+
+  # date_string — updates every hour via time_pattern trigger
+  # Hourly trigger instead of daily to ensure correct value after HA restart
+  - trigger:
+      - platform: time_pattern
+        hours: "*"
+    sensor:
+      - name: date_string
+        unique_id: date_string
+        state: >
+          {% set days = ["Maandag", "Dinsdag", "Woensdag", "Donderdag", "Vrijdag", "Zaterdag", "Zondag"] %}
+          {% set months = ["Januari", "Februari", "Maart", "April", "Mei", "Juni", "Juli", "Augustus", "September", "Oktober", "November", "December"] %}
+          {{ days[now().weekday()] }}, {{ now().day }} {{ months[now().month-1] }} {{ now().year }}
+
+  # sunlight_pct and sunlight_opacity — update reactively on sun/weather state changes
+  - sensor:
+      - name: sunlight_pct
+        unique_id: sunlight_pct
+        unit_of_measurement: '%'
+        device_class: illuminance
+        state: >-
+          {%- set elevation = state_attr('sun.sun','elevation') | float %}
+          {%- set cloud_coverage = state_attr('weather.pirateweather', 'cloud_coverage') | float %}
+          {%- set cloud_factor = (1 - (0.30 * ( cloud_coverage / 100) ** 3 )) %}
+          {%- set min_elevation = -6 %}
+          {%- set max_elevation = 60 %}
+          {%- set adjusted_elevation = elevation - min_elevation %}
+          {%- set adjusted_elevation = [adjusted_elevation,0] | max %}
+          {%- set adjusted_elevation = [adjusted_elevation,max_elevation - min_elevation] | min %}
+          {%- set adjusted_elevation = adjusted_elevation / (max_elevation - min_elevation) %}
+          {%- set adjusted_elevation = adjusted_elevation * 100 %}
+          {%- set brightness = adjusted_elevation * cloud_factor %}
+          {{ brightness | round }}
+
+      - name: sunlight_opacity
+        unique_id: sunlight_opacity
+        state: >-
+          {%- set sunpct = states('sensor.sunlight_pct') | float %}
+          {%- set raw = (sunpct / 100) | round(2) %}
+          {%- if states('sun.sun') == 'above_horizon' %}
+          {{ ([raw, 0.6] | max) | round(2) }}
+          {%- else %}
+          {{ raw }}
+          {%- endif %}
