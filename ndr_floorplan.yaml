@@ -1,0 +1,2838 @@
+title: TabletUI
+
+#############################################################################
+#                                                                           #
+#  BUTTON CARD TEMPLATES                                                    #
+#                                                                           #
+#  Reusable styles for custom:button-card elements.                         #
+#  Usage: type: custom:button-card + template: <name>                       #
+#                                                                           #
+#  nav_button_off  — Inactive navigation button in the sidebar              #
+#  nav_button_on   — Active navigation button (current page)                #
+#  nav_arrow       — Up/down arrow to scroll between menu levels            #
+#  weather_card    — Weather card at the bottom of the sidebar              #
+#                                                                           #
+#############################################################################
+
+button_card_templates:
+  # Inactive navigation button — grey text, transparent background
+  nav_button_off:
+    styles:
+      card:
+        - background: transparent
+        - border: none
+        - border-left: 3px solid transparent
+        - box-shadow: none
+        - height: 4vw
+        - padding: 0 1.2vw
+        - border-radius: 1.5vw
+        - --ha-card-border-width: 0px
+      grid:
+        - grid-template-areas: '"n i"'
+        - grid-template-columns: 1fr auto
+        - grid-template-rows: 1fr
+      name:
+        - font-family: "'Roboto Mono', monospace"
+        - font-weight: "300"
+        - font-size: 1.35vw
+        - text-align: left
+        - justify-self: start
+        - color: "#8d96a6"
+        - letter-spacing: 0.01em
+      icon:
+        - width: 1.75vw
+        - height: 1.75vw
+        - color: "#8d96a6"
+        - opacity: "0.7"
+        - --mdc-icon-size: 1.75vw
+      img_cell:
+        - justify-self: end
+        - width: 1.75vw
+        - height: 1.75vw
+
+  # Active navigation button — golden left accent, white text
+  nav_button_on:
+    styles:
+      card:
+        - background: "linear-gradient(90deg, rgba(245,185,85,0.14) 0%, transparent 100%)"
+        - border: none
+        - border-left: "3px solid #f5b955 !important"
+        - box-shadow: none
+        - height: 4vw
+        - padding: 0 1.2vw
+        - border-radius: 1.5vw
+        - --ha-card-border-width: 0px
+      grid:
+        - grid-template-areas: '"n i"'
+        - grid-template-columns: 1fr auto
+        - grid-template-rows: 1fr
+      name:
+        - font-family: "'Roboto Mono', monospace"
+        - font-weight: "300"
+        - font-size: 1.35vw
+        - text-align: left
+        - justify-self: start
+        - color: "#ffffffff"
+        - letter-spacing: 0.01em
+      icon:
+        - width: 1.75vw
+        - height: 1.75vw
+        - color: "#f5b955"
+        - opacity: "1"
+        - --mdc-icon-size: 1.75vw
+      img_cell:
+        - justify-self: end
+        - width: 1.75vw
+        - height: 1.75vw
+
+  # Arrow button for navigation between the two menu levels (bouncing animation)
+  nav_arrow:
+    show_name: false
+    styles:
+      card:
+        - background: transparent
+        - border: none
+        - box-shadow: none
+        - --ha-card-border-width: 0px
+        - height: 4vw
+        - padding: 0 1.2vw
+        - border-radius: 0.6vw
+      icon:
+        - width: 2vw
+        - height: 2vw
+        - color: "rgba(255,255,255,0.4)"
+        - --mdc-icon-size: 2vw
+        - margin: 0 auto
+      img_cell:
+        - width: 100%
+        - justify-self: center
+        - text-align: center
+
+  # Weather card at the bottom of the sidebar: outdoor temp, weather description and indoor temp
+  # Navigates to /ndr-floorplan/buienradar on tap
+  weather_card:
+    entity: weather.buienradar
+    layout: horizontal
+    show_name: true
+    show_label: true
+    show_icon: false
+    show_state: false
+    name: >
+      [[[
+        return states['weather.buienradar'].attributes.temperature + '°C';
+      ]]]
+    label: >
+      [[[
+        const map = {
+          'sunny': 'Zonnig', 'clear-night': 'Helder', 'cloudy': 'Bewolkt',
+          'fog': 'Mist', 'hail': 'Hagel', 'lightning': 'Onweer',
+          'lightning-rainy': 'Onweer/regen', 'partlycloudy': 'Half bewolkt',
+          'pouring': 'Slagregen', 'rainy': 'Regen', 'snowy': 'Sneeuw',
+          'snowy-rainy': 'Sneeuw/regen', 'windy': 'Winderig',
+          'windy-variant': 'Winderig', 'exceptional': 'Uitzonderlijk'
+        };
+        return map[states['weather.buienradar'].state] || states['weather.buienradar'].state;
+      ]]]
+    custom_fields:
+      weather_icon: >
+        [[[
+          const map = {
+            'sunny':           '/local/ndr_floorplan/floorplan/weather/sunny.png',
+            'clear-night':     '/local/ndr_floorplan/floorplan/weather/clear_night.png',
+            'cloudy':          '/local/ndr_floorplan/floorplan/weather/cloudy.png',
+            'partlycloudy':    '/local/ndr_floorplan/floorplan/weather/mostly_cloudy.png',
+            'fog':             '/local/ndr_floorplan/floorplan/weather/fog.png',
+            'lightning':       '/local/ndr_floorplan/floorplan/weather/lightning.png',
+            'lightning-rainy': '/local/ndr_floorplan/floorplan/weather/storm.png',
+            'rainy':           '/local/ndr_floorplan/floorplan/weather/rainy.png',
+            'pouring':         '/local/ndr_floorplan/floorplan/weather/heavy_rain.png',
+            'snowy':           '/local/ndr_floorplan/floorplan/weather/snowy.png',
+            'snowy-rainy':     '/local/ndr_floorplan/floorplan/weather/heavy_snow.png',
+            'windy':           '/local/ndr_floorplan/floorplan/weather/windy.svg',
+            'windy-variant':   '/local/ndr_floorplan/floorplan/weather/windy.svg',
+            'hail':            '/local/ndr_floorplan/floorplan/weather/mixed_rain.png',
+          };
+          const src = map[entity.state] || '';
+          return `<img src="${src}" style="width:2vw;height:2vw;object-fit:contain;">`;
+        ]]]
+      indoor_temp: >
+        [[[
+          return `<span style="font-size:1.2vw;font-weight:500">${parseFloat(states['sensor.YOUR_INDOOR_TEMP'].state).toFixed(1)}°C</span>`;
+        ]]]
+      home_icon: >
+        [[[
+          return `<ha-icon icon="mdi:home-thermometer-outline" style="width:2vw;height:2vw;--mdc-icon-size:2vw;color:#263D56"></ha-icon>`;
+        ]]]
+    tap_action:
+      action: navigate
+      navigation_path: /ndr-floorplan/buienradar
+    styles:
+      card:
+        - background: none
+        - box-shadow: none
+        - padding: 0
+        - height: 100%
+      grid:
+        - grid-template-areas: '"n weather_icon" "l weather_icon" "indoor_temp home_icon"'
+        - grid-template-columns: 60% 40%
+        - grid-template-rows: 1fr 1fr 1fr
+        - align-items: center
+        - padding: 0 0.5vw
+        - grid-row-gap: 0.4vw
+      name:
+        - font-size: 1.2vw
+        - font-weight: "500"
+        - justify-self: start
+      label:
+        - font-size: 1vw
+        - opacity: "0.8"
+        - justify-self: start
+      custom_fields:
+        weather_icon:
+          - justify-self: end
+          - align-self: center
+          - margin-right: 0.6vw
+        indoor_temp:
+          - justify-self: start
+          - align-self: center
+        home_icon:
+          - justify-self: end
+          - align-self: center
+          - margin-right: 0.6vw
+
+#############################################################################
+#                                                                           #
+#  DASHBOARD VIEWS                                                          #
+#                                                                           #
+#  All views use picture-elements as base so elements can be positioned     #
+#  absolutely (left/top/width in %).                                        #
+#                                                                           #
+#  Each view consists of:                                                  #
+#  1. Main content — to the right of the sidebar (left ~62-63%)            #
+#  2. Sidebar elements — time, date, nav buttons, people, weather          #
+#                                                                           #
+#############################################################################
+
+views:
+
+  #############################################################################################################################################
+  #                                                              Floorplan View                                                               #
+  #############################################################################################################################################
+
+  - title: Home
+    icon: "mdi:floor-plan"
+    panel: true
+    path: home
+    badges: []
+
+    cards:
+      - type: picture-elements
+        image: /local/ndr_floorplan/floorplan/blurredFloorplan.png
+
+        elements:
+
+          # config-template-card is required for ${ } template expressions in picture-elements
+          # (e.g. dynamic opacity based on sensor values)
+          # Add all entities here that you want to read via ${ states[...] }
+          - type: "custom:config-template-card"
+            entities:
+              - light.YOUR_KITCHEN_LIGHT        # replace with your light entity
+              - sun.sun
+              - sensor.sunlight_opacity
+              - weather.buienradar
+              - switch.YOUR_LAMP_SWITCH         # replace with your switch entity
+            style:
+              height: 100%
+              left: 61.7%
+              top: 50%
+              width: 76.5%
+            card_mod:
+              style: |
+                :host {
+                  height: 100dvh !important;
+                  display: block !important;
+                  margin: 0 !important;
+                  padding: 0 !important;
+                }
+                ha-card {
+                  background: transparent !important;
+                  height: 100dvh !important;
+                  border-radius: 0 !important;
+                  box-shadow: none !important;
+                  border: none !important;
+                  margin: 0 !important;
+                  padding: 0 !important;
+                  outline: none !important;
+                  overflow: visible !important;
+                }
+            card:
+              type: picture-elements
+              image: /local/ndr_floorplan/floorplan/house-night.png
+              card_mod:
+                style: |
+                  ha-card {
+                    height: 100dvh !important;
+                    border-radius: 0 !important;
+                    box-shadow: none !important;
+                    border: none !important;
+                    margin: 0 !important;
+                    padding: 0 !important;
+                    overflow: hidden !important;
+                    background-color: transparent !important;
+                  }
+                  ha-card .card-content {
+                    padding: 0 !important;
+                    margin: 0 !important;
+                  }
+
+              elements:
+
+                - action: none
+                  entity: sun.sun
+                  state_image:
+                    above_horizon: /local/ndr_floorplan/floorplan/house-day.png
+                    below_horizon: /local/ndr_floorplan/floorplan/transparent.png
+                  style:
+                    height: 100%
+                    left: 50%
+                    mix-blend-mode: lighten
+                    opacity: "${ states['sensor.sunlight_opacity'].state }"
+                    top: 50%
+                    width: 100%
+                  tap_action:
+                    action: none
+                  type: image
+
+                - type: image
+                  action: none
+                  entity: weather.buienradar
+                  state_image:
+                    rainy: /local/ndr_floorplan/floorplan/weather/rainstorm.gif
+                    pouring: /local/ndr_floorplan/floorplan/weather/rain.gif
+                    lightning-rainy: /local/ndr_floorplan/floorplan/weather/rain2.gif
+                    snowy: /local/ndr_floorplan/floorplan/transparent.png
+                    snowy-rainy: /local/ndr_floorplan/floorplan/transparent.png
+                    sunny: /local/ndr_floorplan/floorplan/transparent.png
+                    clear-night: /local/ndr_floorplan/floorplan/transparent.png
+                    fog: /local/ndr_floorplan/floorplan/transparent.png
+                    hail: /local/ndr_floorplan/floorplan/transparent.png
+                    lightning: /local/ndr_floorplan/floorplan/transparent.png
+                    cloudy: /local/ndr_floorplan/floorplan/transparent.png
+                    partlycloudy: /local/ndr_floorplan/floorplan/transparent.png
+                    windy: /local/ndr_floorplan/floorplan/transparent.png
+                    windy-variant: /local/ndr_floorplan/floorplan/transparent.png
+                    exceptional: /local/ndr_floorplan/floorplan/transparent.png
+                  style:
+                    left: 53%
+                    top: 50%
+                    width: 105%
+                    height: 100%
+                    mix-blend-mode: color-dodge
+                    opacity: "0.1"
+                    -webkit-mask-image: linear-gradient(to right, transparent 0%, transparent 8%, black 20%)
+                    mask-image: linear-gradient(to right, transparent 0%, transparent 8%, black 20%)
+                  tap_action:
+                    action: none
+
+                - action: none
+                  image: /local/ndr_floorplan/floorplan/interior-night.png
+                  style:
+                    height: 100%
+                    left: 50%
+                    top: 50%
+                    width: 100%
+                  tap_action:
+                    action: none
+                  type: image
+
+                - action: none
+                  entity: sun.sun
+                  state_image:
+                    above_horizon: /local/ndr_floorplan/floorplan/interior-day.png
+                    below_horizon: /local/ndr_floorplan/floorplan/transparent.png
+                  style:
+                    height: 100%
+                    left: 50%
+                    mix-blend-mode: lighten
+                    opacity: "${ states['sensor.sunlight_opacity'].state }"
+                    top: 50%
+                    width: 100%
+                  tap_action:
+                    action: none
+                  type: image
+
+                # Light overlay — replace with your own light entity
+                - action: none
+                  entity: light.YOUR_KITCHEN_LIGHT
+                  image: /local/ndr_floorplan/floorplan/interior-night.png
+                  style:
+                    filter: >-
+                      ${ "hue-rotate(" + (states['light.YOUR_KITCHEN_LIGHT'].attributes.hs_color
+                      ? states['light.YOUR_KITCHEN_LIGHT'].attributes.hs_color[0] : 0) + "deg)"}
+                    left: 50%
+                    mix-blend-mode: lighten
+                    opacity: "${states['light.YOUR_KITCHEN_LIGHT'].state === 'on' ? (states['light.YOUR_KITCHEN_LIGHT'].attributes.brightness / 255) : '0'}"
+                    top: 50%
+                    width: 100%
+                  tap_action:
+                    action: none
+                  type: image
+
+                # Switch overlay — replace with your own switch entity
+                - action: none
+                  entity: switch.YOUR_LAMP_SWITCH
+                  image: /local/ndr_floorplan/floorplan/kitchen_off.png
+                  style:
+                    filter: >-
+                      ${ "hue-rotate(" + (states['switch.YOUR_LAMP_SWITCH'].attributes.hs_color
+                      ? states['switch.YOUR_LAMP_SWITCH'].attributes.hs_color[0] : 0) + "deg)"}
+                    left: 50%
+                    mix-blend-mode: lighten
+                    opacity: "${states['switch.YOUR_LAMP_SWITCH'].state === 'on' ? (states['switch.YOUR_LAMP_SWITCH'].attributes.brightness / 255) : '0'}"
+                    top: 50%
+                    width: 100%
+                  tap_action:
+                    action: none
+                  type: image
+
+                # Light toggle icon — positioned on the floorplan
+                - entity: light.YOUR_KITCHEN_LIGHT
+                  icon: "mdi:lightbulb"
+                  style:
+                    align-items: center
+                    background-color: "rgba(255, 255, 255, 0)"
+                    border-radius: 100%
+                    box-shadow: "0px 0px 28px 0px rgba(0,0,0,0.39)"
+                    display: flex
+                    justify-content: center
+                    left: 30.5%
+                    margin-left: "-1.5vw"
+                    margin-top: "-1.5vw"
+                    top: 68.5%
+                    transform: scale(1.2)
+                    width: 2.5vw
+                    height: 2.5vw
+                  card_mod:
+                    style: |
+                      :host {
+                        --mdc-icon-size: 0.0vw;
+                      }
+                      ha-state-icon {
+                        color: darkgrey !important;
+                      }
+                      :host([state="on"]) ha-state-icon,
+                      :host([data-state="on"]) ha-state-icon {
+                        color: #ffff66 !important;
+                      }
+                  tap_action:
+                    action: toggle
+                  type: state-icon
+
+                # Switch toggle icon — positioned on the floorplan
+                - entity: switch.YOUR_LAMP_SWITCH
+                  icon: "mdi:lightbulb"
+                  style:
+                    "--iron-icon-height": 0.5vw
+                    "--iron-icon-width": 0.5vw
+                    "--paper-item-icon-active-color": "#ffff66"
+                    "--paper-item-icon-color": darkgrey
+                    align-items: center
+                    background-color: "rgba(255, 255, 255, 0)"
+                    border-radius: 100%
+                    box-shadow: "0px 0px 28px 0px rgba(0,0,0,0.39)"
+                    display: flex
+                    justify-content: center
+                    left: 90%
+                    margin-left: "-1.5vw"
+                    margin-top: "-1.5vw"
+                    top: 71.5%
+                    transform: scale(1.2)
+                    width: 2.5vw
+                    height: 2.5vw
+                  card_mod:
+                    style: |
+                      :host {
+                        --mdc-icon-size: 0.0vw;
+                      }
+                      ha-state-icon {
+                        color: darkgrey !important;
+                      }
+                      :host([state="on"]) ha-state-icon,
+                      :host([data-state="on"]) ha-state-icon {
+                        color: #ffff66 !important;
+                      }
+                  tap_action:
+                    action: toggle
+                  type: state-icon
+
+          ####################################################################
+          #  SIDEBAR                                                         #
+          #  Order matters: sidebar image first, then all elements on top   #
+          #  (time, date, buttons, people, weather)                         #
+          ####################################################################
+
+          # Digital clock (sensor.time = HH:MM format)
+          - entity: sensor.time
+            style:
+              color: "rgba(255, 255, 255, 0.7)"
+              font-size: 5.41vw
+              font-weight: 200
+              left: 2.7%
+              letter-spacing: "-0.05vw"
+              max-width: 1px
+              top: 10%
+            tap_action:
+              action: none
+            type: state-label
+
+          # Date (sensor.date_string = e.g. "Monday, 12 May 2026")
+          - entity: sensor.date_string
+            style:
+              color: "rgba(255, 255, 255, 0.3)"
+              font-size: 1.3vw
+              font-weight: 300
+              left: 18.1%
+              letter-spacing: "-0.05vw"
+              text-align: left
+              top: 17%
+              width: 30%
+            tap_action:
+              action: none
+            type: state-label
+
+          # Navigation buttons — use nav_button_on for the active page
+          # and nav_button_off for all other pages
+          - type: custom:button-card
+            template: nav_button_on
+            name: Home
+            icon: mdi:home
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/home
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 26%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Apparaten
+            icon: mdi:monitor-cellphone
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/devices
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 34%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Media
+            icon: mdi:play-circle
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/media
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 42%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Klimaat
+            icon: mdi:home-thermometer
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/climate
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 50%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_arrow
+            icon: mdi:chevron-down
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/energie
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 58%; width: 8%; }
+                @keyframes bounce {
+                  0%,100% { transform: translateY(0); }
+                  50% { transform: translateY(4px); }
+                }
+                ha-card { animation: bounce 1.8s ease-in-out infinite; }
+
+          # People at home section — profile photo appears when person is home
+          # state_image determines which image is shown per presence state
+          - style:
+              color: white
+              font-size: 1vw
+              font-weight: 300
+              left: 8.8%
+              opacity: 1
+              top: 66%
+              width: 10%
+            text: "Mensen Thuis:"
+            type: "custom:text-element"
+
+          - action: none
+            entity: person.YOUR_NAME
+            state_image:
+              home: /local/ndr_floorplan/people/YOUR_NAME.png
+              not_home: /local/ndr_floorplan/people/YOUR_NAME_gone.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border-radius: 10vw
+              height: 4.5vw
+              left: 5.8%
+              top: 72%
+              width: 4.5vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            entity: person.YOUR_NAME_2
+            state_image:
+              home: /local/ndr_floorplan/people/YOUR_NAME_2.png
+              not_home: /local/ndr_floorplan/people/YOUR_NAME_2_gone.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border-radius: 10vw
+              height: 4.5vw
+              left: 10.8%
+              top: 72%
+              width: 4.5vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            image: /local/ndr_floorplan/floorplan/transparent.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border: "0.1vw dashed rgba(255, 255, 255, 0.3)"
+              border-radius: 10vw
+              height: 4.2vw
+              left: 15.9%
+              top: 72.2%
+              width: 4.2vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            image: /local/ndr_floorplan/floorplan/transparent.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border: "0.1vw dashed rgba(255, 255, 255, 0.3)"
+              border-radius: 10vw
+              height: 4.2vw
+              left: 21.1%
+              top: 72.2%
+              width: 4.2vw
+              -webkit-mask-image: linear-gradient(to right, black 0%, transparent 100%)
+              mask-image: linear-gradient(to right, black 0%, transparent 100%)
+            tap_action:
+              action: none
+            type: image
+
+          # Mini temperature graph — indoor and outdoor temperature
+          # Replace sensor.YOUR_INDOOR_TEMP with your own indoor temperature sensor
+          # Color thresholds: blue < 10°C, green 10-25°C, red > 25°C
+          - color_thresholds:
+              - color: "#4FC3F7"
+                value: 10
+              - color: "#8BC34A"
+                value: 20
+              - color: "#E53935"
+                value: 25
+            entities:
+              - sensor.YOUR_INDOOR_TEMP
+              - sensor.buienradar_temperature
+            icon: "mdi:home-thermometer-outline"
+            show:
+              icon: false
+              legend: false
+              name: false
+              state: false
+            card_mod:
+              style: |
+                :host {
+                  left: 11.6%;
+                  top:  92.4%;
+                  width: 23.5%;
+                  overflow: hidden;
+                  height: 15%;
+                  background: none !important;
+                  box-shadow: none !important;
+                }
+                ha-card {
+                  background: none !important;
+                  padding: 0 !important;
+                  -webkit-mask-image: linear-gradient(to right, black 50%, transparent 100%);
+                  mask-image: linear-gradient(to right, black 50%, transparent 100%);
+                }
+                .state__time{
+                  font-size:0.9vw !important;
+                  margin-top: 0.2vw;
+                  font-weight: 300 !important;
+                  opacity: 0.4 !important;
+                }
+                .states {
+                  font-size: 0.5vw !important;
+                  padding: 1vw 0vw 0vw 0vw !important;
+                  margin: auto !important;
+                  font-weight: 400 !important;
+                  width: 68%;
+                }
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/buienradar
+            type: "custom:mini-graph-card"
+
+          # Weather card — uses the weather_card button_card_template (see top of file)
+          - type: custom:button-card
+            template: weather_card
+            card_mod:
+              style: |
+                :host {
+                  left: 12.46%;
+                  top: 85%;
+                  width: 18.78%;
+                  height: 11% !important;
+                  background: none !important;
+                  box-shadow: none !important;
+                  border-style: none;
+                }
+
+  #############################################################################################################################################
+  #                                                         All Devices (Entities)                                                            #
+  #############################################################################################################################################
+
+  - title: Devices
+    icon: "mdi:devices"
+    path: devices
+    panel: true
+    cards:
+      - type: picture-elements
+        image: /local/ndr_floorplan/floorplan/blurredFloorplan.png
+
+        elements:
+          - type: custom:layout-card
+            layout_type: grid
+            layout_options:
+              grid-template-columns: 100%
+              grid-template-rows: 100%
+            style:
+              height: 100%
+              left: 63%
+              top: 50%
+              width: 80%
+
+            cards:
+              # custom:simple-swipe-card — newer swipe implementation (used on Devices)
+              # Consistent with Media page implementation
+              - type: custom:simple-swipe-card
+                show_pagination: true
+                auto_hide_pagination: 3000
+                loop_mode: infinite
+                swipe_direction: horizontal
+                swipe_behavior: single
+                enable_auto_swipe: false
+                enable_reset_after: true
+                reset_after_timeout: 45000
+                reset_target_card: 1
+
+                cards:
+
+                  # Page 1 — Indoor/outdoor lights, appliances, media
+                  # Add as many columns and rows as you need
+                  # tileOnRow controls how many tiles per row within a column
+                  - type: custom:layout-card
+                    layout_type: grid
+                    layout_options:
+                      grid-template-columns: 100%
+                      grid-template-rows: 100%
+                    cards:
+                      - type: custom:homekit-card
+                        home: false
+                        style: |
+                          :host {
+                            --tile-background: rgba(255, 255, 255, 0.18);
+                            --tile-border-radius: 20px;
+                            --tile-width: 81px;
+                            --tile-height: 81px;
+                            --tile-box-shadow:
+                              0 6px 14px rgba(0,0,0,0.15),
+                              inset 0 1px 0 rgba(255,255,255,0.5);
+                            --tile-name-text-color: rgba(0,0,0,0.7);
+                            --tile-state-text-color: rgba(0,0,0,0.5);
+                            --tile-icon-color: rgba(0, 0, 0, 0.3);
+                            --tile-on-icon-color: #2FA8E1;
+                            --tile-width-mobile: 92px;
+                            --tile-height-mobile: 92px;
+                          }
+                          .tile.on {
+                            background: rgba(255,255,255,0.98) !important;
+                            border: 1px solid rgba(255,255,255,0.7) !important;
+                            box-shadow:
+                              0 10px 24px rgba(0,0,0,0.22),
+                              inset 0 1px 0 rgba(255,255,255,0.65) !important;
+                          }
+                        useBrightness: false
+                        useTemperature: false
+                        useRGB: false
+                        titleColor: "#FFF"
+                        enableColumns: true
+                        statePositionTop: true
+                        rows:
+                          - row: 1
+                            columns:
+                              - column: 1
+                                tileOnRow: 2
+                                entities:
+                                  - title: Binnenverlichting
+                                    entities:
+                                      - entity: light.YOUR_LIGHT_1
+                                        name: Licht 1
+                                      - entity: light.YOUR_LIGHT_2
+                                        name: Licht 2
+                                      - entity: switch.YOUR_SWITCH_1
+                                        name: Schakelaar 1
+                                      - entity: switch.YOUR_SWITCH_2
+                                        name: Schakelaar 2
+                              - column: 2
+                                tileOnRow: 2
+                                entities:
+                                  - title: Buitenverlichting
+                                    entities:
+                                      - entity: light.YOUR_OUTDOOR_LIGHT_1
+                                        name: Tuin
+                                      - entity: light.YOUR_OUTDOOR_LIGHT_2
+                                        name: Garage
+                                      - entity: switch.YOUR_OUTDOOR_SWITCH_1
+                                        name: Vijver
+                              - column: 3
+                                tileOnRow: 2
+                                entities:
+                                  - title: Media
+                                    entities:
+                                      - entity: media_player.YOUR_SPEAKER_1
+                                        name: Woonkamer
+                                        icon: mdi:speaker-wireless
+                                        offStates: ["off","unavailable","paused"]
+                                      - entity: media_player.YOUR_SPEAKER_2
+                                        name: Keuken
+                                        icon: mdi:speaker-wireless
+                                        offStates: ["off","unavailable","paused"]
+                                      - entity: media_player.YOUR_TV
+                                        name: TV
+                                        icon: mdi:television
+                                        offStates: ["off","unavailable","paused"]
+                          - row: 2
+                            columns:
+                              - column: 4
+                                tileOnRow: 2
+                                entities:
+                                  - title: Huishouden
+                                    entities:
+                                      - entity: sensor.YOUR_WASHING_MACHINE_STATUS
+                                        name: Wasmachine
+                                        icon: mdi:washing-machine
+                                      - entity: sensor.YOUR_DISHWASHER_STATUS
+                                        name: Vaatwasser
+                                        icon: mdi:dishwasher
+                              - column: 5
+                                tileOnRow: 2
+                                entities:
+                                  - title: Deuren & Ramen
+                                    entities:
+                                      - entity: binary_sensor.YOUR_FRONT_DOOR
+                                        name: Voordeur
+                                        icon: mdi:door
+                                      - entity: binary_sensor.YOUR_WINDOW_1
+                                        name: Raam 1
+                                        icon: mdi:window-open
+                                      - entity: binary_sensor.YOUR_GARAGE_DOOR
+                                        name: Garage
+                                        icon: mdi:garage-variant-lock
+                              - column: 6
+                                tileOnRow: 2
+                                entities:
+                                  - title: Veiligheid
+                                    entities:
+                                      - entity: binary_sensor.YOUR_SMOKE_DETECTOR_1
+                                        name: Rookmelder 1
+                                        icon: mdi:smoke-detector
+                                      - entity: binary_sensor.YOUR_SMOKE_DETECTOR_2
+                                        name: Rookmelder 2
+                                        icon: mdi:smoke-detector
+
+                  # Page 2 — Add a second swipe page for more devices
+                  - type: custom:layout-card
+                    layout_type: grid
+                    layout_options:
+                      grid-template-columns: 100%
+                      grid-template-rows: 100%
+                    cards:
+                      - type: custom:homekit-card
+                        home: false
+                        style: |
+                          :host {
+                            --tile-background: rgba(255, 255, 255, 0.18);
+                            --tile-border-radius: 22px;
+                            --tile-width: 80px;
+                            --tile-height: 80px;
+                            --tile-box-shadow:
+                              0 6px 14px rgba(0,0,0,0.15),
+                              inset 0 1px 0 rgba(255,255,255,0.5);
+                            --tile-name-text-color: rgba(0,0,0,0.7);
+                            --tile-state-text-color: rgba(0,0,0,0.5);
+                            --tile-icon-color: rgba(0, 0, 0, 0.3);
+                            --tile-on-icon-color: #2FA8E1;
+                            --tile-width-mobile: 92px;
+                            --tile-height-mobile: 92px;
+                          }
+                          .tile.on {
+                            background: rgba(255,255,255,0.98) !important;
+                            border: 1px solid rgba(255,255,255,0.7) !important;
+                            box-shadow:
+                              0 10px 24px rgba(0,0,0,0.22),
+                              inset 0 1px 0 rgba(255,255,255,0.65) !important;
+                          }
+                        useBrightness: false
+                        useTemperature: false
+                        useRGB: false
+                        titleColor: "#FFF"
+                        enableColumns: true
+                        statePositionTop: true
+                        rows:
+                          - row: 1
+                            columns:
+                              - column: 1
+                                tileOnRow: 2
+                                entities:
+                                  - title: Ventilatie
+                                    entities:
+                                      - entity: button.YOUR_FAN_AUTO
+                                        name: Auto
+                                        icon: mdi:fan-auto
+                                      - entity: button.YOUR_FAN_LOW
+                                        name: Stand 1
+                                        icon: mdi:fan-speed-1
+                                      - entity: button.YOUR_FAN_MED
+                                        name: Stand 2
+                                        icon: mdi:fan-speed-2
+                                      - entity: button.YOUR_FAN_HIGH
+                                        name: Stand 3
+                                        icon: mdi:fan-speed-3
+                              - column: 2
+                                tileOnRow: 2
+                                entities:
+                                  - title: Technisch
+                                    entities:
+                                      - entity: sensor.YOUR_WATER_PRESSURE
+                                        name: Waterdruk
+                                        icon: mdi:gauge
+                                      - entity: sensor.YOUR_BOILER_TEMP
+                                        name: Boiler Temp
+                                        icon: mdi:water-boiler
+
+  #############################################################################################################################################
+  #                                                      Media Player and Spotify                                                             #
+  #############################################################################################################################################
+
+  - title: Media
+    path: media
+    icon: "mdi:play-circle"
+    panel: true
+    badges: []
+    cards:
+      - type: picture-elements
+        image: /local/ndr_floorplan/floorplan/blurredFloorplan.png
+
+        elements:
+          - type: custom:layout-card
+            layout_type: grid
+            layout_options:
+              grid-template-columns: 100%
+              grid-template-rows: 100%
+            style:
+              height: 87%
+              left: 63%
+              top: 50%
+              width: 75%
+            cards:
+              - type: custom:simple-swipe-card
+                show_pagination: true
+                auto_hide_pagination: 3000
+                loop_mode: infinite
+                swipe_direction: horizontal
+                swipe_behavior: single
+                enable_auto_swipe: false
+                enable_reset_after: true
+                reset_after_timeout: 45000
+                reset_target_card: 1
+                cards:
+                  - type: custom:layout-card
+                    layout_type: custom:grid-layout
+                    layout:
+                      grid-template-columns: 57% 40%
+                      grid-template-rows: auto
+                      grid-template-areas: |
+                        "left right"
+                      grid-gap: 25px
+                      width: 100%
+                      margin: 0
+                    cards:
+                      - type: vertical-stack
+                        cards:
+                          - type: custom:mini-media-player
+                            artwork: full-cover
+                            entity: media_player.YOUR_MEDIA_PLAYER   # replace with your media player
+                            hide:
+                              power: true
+                              progress: false
+                              runtime: true
+                              volume: false
+                              controls: false
+                              source: false
+                              info: false
+                              name: false
+                              icon: true
+                            card_mod:
+                              style: |
+                                ha-card{
+                                  border-radius: 28px;
+                                  overflow: hidden !important;
+                                  box-shadow: none;
+                                  background: transparent !important;
+                                  margin-top: 54.5px;
+                                }
+                                :host #primaryProgress{
+                                  background: #474A52 !important;
+                                }
+                      - type: custom:spotifyplus-card
+                        cardUniqueId: YOUR_CARD_UNIQUE_ID
+                        sections:
+                          - recents
+                          - playlistfavorites
+                          - devices
+                          - albumfavorites
+                          - searchmedia
+                        entity: media_player.spotifyplus_YOUR_SPOTIFY
+                        playerHeaderTitle: "{player.source}"
+                        playerHeaderArtistTrack: "{player.media_artist} - {player.media_title}"
+                        playerHeaderAlbum: "{player.media_album_name} {player.sp_playlist_name_title}"
+                        playerHeaderNoMediaPlayingText: "\"{player.name}\" state is \"{player.state}\""
+                        albumFavBrowserItemsPerRow: 3
+                        albumFavBrowserItemsHideTitle: false
+                        albumFavBrowserItemsHideSubTitle: false
+                        albumFavBrowserItemsSortTitle: true
+                        playlistFavBrowserItemsPerRow: 3
+                        playlistFavBrowserItemsHideTitle: false
+                        playlistFavBrowserItemsHideSubTitle: false
+                        playlistFavBrowserItemsSortTitle: true
+                        recentBrowserItemsPerRow: 3
+                        recentBrowserItemsHideTitle: false
+                        recentBrowserItemsHideSubTitle: false
+                        searchMediaBrowserItemsPerRow: 3
+                        searchMediaBrowserItemsHideTitle: false
+                        searchMediaBrowserItemsHideSubTitle: true
+                        searchMediaBrowserSearchLimit: 50
+                        searchMediaBrowserSearchTypes:
+                          - Albums
+                          - Artists
+                          - Playlists
+                          - Tracks
+                          - AudioBooks
+                          - Shows
+                          - Episodes
+                        sectionDefault: recents
+                        height: "47"
+                        width: "25"
+                        card_mod:
+                          style: |
+                            ha-card {
+                              height: 100%;
+                              width: 100%;
+                              min-width: 0;
+                              overflow: hidden;
+                              display: flex;
+                              flex-direction: column;
+                              background: transparent !important;
+                              box-shadow: none !important;
+                            }
+
+                  - type: custom:sonos-card
+                    widthPercentage: 165
+                    heightPercentage: 118
+                    hideTitleForThumbnailIcons: true
+                    sections:
+                      - grouping
+                      - media browser
+                    mediaBrowser:
+                      itemsPerRow: 8
+                      shortcut:
+                        media_content_id: 'media-source://spotify/library/made-for-you'
+                        media_content_type: 'spotify://library'
+                        icon: 'mdi:spotify'
+                        name: 'Spotify'
+                      favorites:
+                        title: Sonos & Radio stations
+                        hideTitleForThumbnailIcons: true
+                        iconPadding: 0
+                        iconMarginPercentage: 0.3
+                    card_mod:
+                      style: |
+                        ha-card {
+                          background: transparent !important;
+                          box-shadow: none !important;
+                          --accent-color: #2FA8E1 !important;
+                          --card-background-color: transparent !important;
+                        }
+
+          - entity: sensor.time
+            style:
+              color: "rgba(255, 255, 255, 0.7)"
+              font-size: 5.41vw
+              font-weight: 200
+              left: 2.7%
+              letter-spacing: "-0.05vw"
+              max-width: 1px
+              top: 10%
+            tap_action:
+              action: none
+            type: state-label
+
+          - entity: sensor.date_string
+            style:
+              color: "rgba(255, 255, 255, 0.3)"
+              font-size: 1.3vw
+              font-weight: 300
+              left: 18.1%
+              letter-spacing: "-0.05vw"
+              text-align: left
+              top: 17%
+              width: 30%
+            tap_action:
+              action: none
+            type: state-label
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Home
+            icon: mdi:home
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/home
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 26%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Apparaten
+            icon: mdi:monitor-cellphone
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/devices
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 34%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_on
+            name: Media
+            icon: mdi:play-circle
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/media
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 42%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Klimaat
+            icon: mdi:home-thermometer
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/climate
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 50%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_arrow
+            icon: mdi:chevron-down
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/energie
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 58%; width: 8%; }
+                @keyframes bounce {
+                  0%,100% { transform: translateY(0); }
+                  50% { transform: translateY(4px); }
+                }
+                ha-card { animation: bounce 1.8s ease-in-out infinite; }
+
+          - style:
+              color: white
+              font-size: 1vw
+              font-weight: 300
+              left: 8.8%
+              opacity: 1
+              top: 66%
+              width: 10%
+            text: "Mensen Thuis:"
+            type: "custom:text-element"
+
+          - action: none
+            entity: person.YOUR_NAME
+            state_image:
+              home: /local/ndr_floorplan/people/YOUR_NAME.png
+              not_home: /local/ndr_floorplan/people/YOUR_NAME_gone.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border-radius: 10vw
+              height: 4.5vw
+              left: 5.8%
+              top: 72%
+              width: 4.5vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            entity: person.YOUR_NAME_2
+            state_image:
+              home: /local/ndr_floorplan/people/YOUR_NAME_2.png
+              not_home: /local/ndr_floorplan/people/YOUR_NAME_2_gone.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border-radius: 10vw
+              height: 4.5vw
+              left: 10.8%
+              top: 72%
+              width: 4.5vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            image: /local/ndr_floorplan/floorplan/transparent.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border: "0.1vw dashed rgba(255, 255, 255, 0.3)"
+              border-radius: 10vw
+              height: 4.2vw
+              left: 15.9%
+              top: 72.2%
+              width: 4.2vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            image: /local/ndr_floorplan/floorplan/transparent.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border: "0.1vw dashed rgba(255, 255, 255, 0.3)"
+              border-radius: 10vw
+              height: 4.2vw
+              left: 21.1%
+              top: 72.2%
+              width: 4.2vw
+              -webkit-mask-image: linear-gradient(to right, black 0%, transparent 100%)
+              mask-image: linear-gradient(to right, black 0%, transparent 100%)
+            tap_action:
+              action: none
+            type: image
+
+          - color_thresholds:
+              - color: "#4FC3F7"
+                value: 10
+              - color: "#8BC34A"
+                value: 20
+              - color: "#E53935"
+                value: 25
+            entities:
+              - sensor.YOUR_INDOOR_TEMP
+              - sensor.buienradar_temperature
+            icon: "mdi:home-thermometer-outline"
+            show:
+              icon: false
+              legend: false
+              name: false
+              state: false
+            card_mod:
+              style: |
+                :host {
+                  left: 11.6%;
+                  top:  92.4%;
+                  width: 23.5%;
+                  overflow: hidden;
+                  height: 15%;
+                  background: none !important;
+                  box-shadow: none !important;
+                }
+                ha-card {
+                  background: none !important;
+                  padding: 0 !important;
+                  -webkit-mask-image: linear-gradient(to right, black 50%, transparent 100%);
+                  mask-image: linear-gradient(to right, black 50%, transparent 100%);
+                }
+                .state__time{
+                  font-size:0.9vw !important;
+                  margin-top: 0.2vw;
+                  font-weight: 300 !important;
+                  opacity: 0.4 !important;
+                }
+                .states {
+                  font-size: 0.5vw !important;
+                  padding: 1vw 0vw 0vw 0vw !important;
+                  margin: auto !important;
+                  font-weight: 400 !important;
+                  width: 68%;
+                }
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/buienradar
+            type: "custom:mini-graph-card"
+
+          - type: custom:button-card
+            template: weather_card
+            card_mod:
+              style: |
+                :host {
+                  left: 12.46%;
+                  top: 85%;
+                  width: 18.78%;
+                  height: 11% !important;
+                  background: none !important;
+                  box-shadow: none !important;
+                  border-style: none;
+                }
+
+  #############################################################################################################################################
+  #                                                                 Climate                                                                   #
+  #############################################################################################################################################
+
+  - title: Climate
+    icon: "mdi:home-thermometer-outline"
+    path: climate
+    panel: true
+    cards:
+      - type: picture-elements
+        image: /local/ndr_floorplan/floorplan/blurredFloorplan.png
+
+        elements:
+          - type: "custom:layout-card"
+            layout_type: grid
+            layout_options:
+              grid-template-columns: 100%
+              grid-template-rows: 100%
+            style:
+              height: 87%
+              left: 62%
+              top: 50%
+              width: 68%
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: horizontal-stack
+                    cards:
+                      - type: vertical-stack
+                        cards:
+                          - type: custom:mini-climate
+                            entity: climate.YOUR_CLIMATE_1   # replace with your climate entity
+                            scale: 0.85
+                            temperature:
+                              unit: "°C"
+                              source:
+                                entity: sensor.YOUR_CLIMATE_1_TEMP
+                            icon: mdi:snowflake
+                            card_mod:
+                              style: |
+                                :host {
+                                  --ha-card-background: transparent !important;
+                                  --card-background-color: transparent !important;
+                                  --ha-card-box-shadow: none !important;
+                                  border-radius: 18px !important;
+                                  overflow: hidden !important;
+                                }
+                                ha-card {
+                                  background: transparent !important;
+                                  box-shadow: none !important;
+                                  border: none !important;
+                                  border-radius: 18px !important;
+                                  overflow: hidden !important;
+                                }
+                          - type: "custom:mini-graph-card"
+                            entities:
+                              - sensor.YOUR_CLIMATE_1_TEMP
+                            height: 70
+                            hours_to_show: 24
+                            name: Ruimte 1
+                            points_per_hour: 0.5
+                            line_width: 2
+                            show:
+                              extrema: true
+                              fill: fade
+                              labels: false
+                            color_thresholds:
+                              - value: 24
+                                color: "#eb4d54"
+                              - value: 21
+                                color: "#1db954"
+                              - value: 18
+                                color: "#3a8df7"
+                            card_mod:
+                              style: |
+                                ha-card {
+                                  border-radius: 15px;
+                                  --ha-card-background: transparent;
+                                  }
+                      - type: vertical-stack
+                        cards:
+                          - type: custom:mini-climate
+                            entity: climate.YOUR_CLIMATE_2   # replace with your climate entity
+                            scale: 0.85
+                            temperature:
+                              unit: "°C"
+                              source:
+                                entity: sensor.YOUR_INDOOR_TEMP
+                            icon: mdi:weather-sunny
+                            card_mod:
+                              style: |
+                                :host {
+                                  --ha-card-background: transparent !important;
+                                  --card-background-color: transparent !important;
+                                  --ha-card-box-shadow: none !important;
+                                  border-radius: 18px !important;
+                                  overflow: hidden !important;
+                                }
+                                ha-card {
+                                  background: transparent !important;
+                                  box-shadow: none !important;
+                                  border: none !important;
+                                  border-radius: 18px !important;
+                                  overflow: hidden !important;
+                                }
+                          - type: "custom:mini-graph-card"
+                            entities:
+                              - sensor.YOUR_INDOOR_TEMP
+                            height: 70
+                            hours_to_show: 24
+                            name: Woonkamer
+                            points_per_hour: 0.5
+                            decimals: 1
+                            line_width: 2
+                            show:
+                              extrema: true
+                              fill: fade
+                              labels: false
+                            color_thresholds:
+                              - value: 24
+                                color: "#eb4d54"
+                              - value: 21
+                                color: "#1db954"
+                              - value: 18
+                                color: "#3a8df7"
+                            card_mod:
+                              style: |
+                                ha-card {
+                                  border-radius: 15px;
+                                  --ha-card-background: transparent;
+                                  }
+
+          - entity: sensor.time
+            style:
+              color: "rgba(255, 255, 255, 0.7)"
+              font-size: 5.41vw
+              font-weight: 200
+              left: 2.7%
+              letter-spacing: "-0.05vw"
+              max-width: 1px
+              top: 10%
+            tap_action:
+              action: none
+            type: state-label
+
+          - entity: sensor.date_string
+            style:
+              color: "rgba(255, 255, 255, 0.3)"
+              font-size: 1.3vw
+              font-weight: 300
+              left: 18.1%
+              letter-spacing: "-0.05vw"
+              text-align: left
+              top: 17%
+              width: 30%
+            tap_action:
+              action: none
+            type: state-label
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Home
+            icon: mdi:home
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/home
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 26%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Apparaten
+            icon: mdi:monitor-cellphone
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/devices
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 34%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Media
+            icon: mdi:play-circle
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/media
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 42%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_on
+            name: Klimaat
+            icon: mdi:home-thermometer
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/climate
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 50%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_arrow
+            icon: mdi:chevron-down
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/energie
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 58%; width: 8%; }
+                @keyframes bounce {
+                  0%,100% { transform: translateY(0); }
+                  50% { transform: translateY(4px); }
+                }
+                ha-card { animation: bounce 1.8s ease-in-out infinite; }
+
+          - style:
+              color: white
+              font-size: 1vw
+              font-weight: 300
+              left: 8.8%
+              opacity: 1
+              top: 66%
+              width: 10%
+            text: "Mensen Thuis:"
+            type: "custom:text-element"
+
+          - action: none
+            entity: person.YOUR_NAME
+            state_image:
+              home: /local/ndr_floorplan/people/YOUR_NAME.png
+              not_home: /local/ndr_floorplan/people/YOUR_NAME_gone.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border-radius: 10vw
+              height: 4.5vw
+              left: 5.8%
+              top: 72%
+              width: 4.5vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            entity: person.YOUR_NAME_2
+            state_image:
+              home: /local/ndr_floorplan/people/YOUR_NAME_2.png
+              not_home: /local/ndr_floorplan/people/YOUR_NAME_2_gone.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border-radius: 10vw
+              height: 4.5vw
+              left: 10.8%
+              top: 72%
+              width: 4.5vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            image: /local/ndr_floorplan/floorplan/transparent.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border: "0.1vw dashed rgba(255, 255, 255, 0.3)"
+              border-radius: 10vw
+              height: 4.2vw
+              left: 15.9%
+              top: 72.2%
+              width: 4.2vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            image: /local/ndr_floorplan/floorplan/transparent.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border: "0.1vw dashed rgba(255, 255, 255, 0.3)"
+              border-radius: 10vw
+              height: 4.2vw
+              left: 21.1%
+              top: 72.2%
+              width: 4.2vw
+              -webkit-mask-image: linear-gradient(to right, black 0%, transparent 100%)
+              mask-image: linear-gradient(to right, black 0%, transparent 100%)
+            tap_action:
+              action: none
+            type: image
+
+          - color_thresholds:
+              - color: "#4FC3F7"
+                value: 10
+              - color: "#8BC34A"
+                value: 20
+              - color: "#E53935"
+                value: 25
+            entities:
+              - sensor.YOUR_INDOOR_TEMP
+              - sensor.buienradar_temperature
+            icon: "mdi:home-thermometer-outline"
+            show:
+              icon: false
+              legend: false
+              name: false
+              state: false
+            card_mod:
+              style: |
+                :host {
+                  left: 11.6%;
+                  top:  92.4%;
+                  width: 23.5%;
+                  overflow: hidden;
+                  height: 15%;
+                  background: none !important;
+                  box-shadow: none !important;
+                }
+                ha-card {
+                  background: none !important;
+                  padding: 0 !important;
+                  -webkit-mask-image: linear-gradient(to right, black 50%, transparent 100%);
+                  mask-image: linear-gradient(to right, black 50%, transparent 100%);
+                }
+                .state__time{
+                  font-size:0.9vw !important;
+                  margin-top: 0.2vw;
+                  font-weight: 300 !important;
+                  opacity: 0.4 !important;
+                }
+                .states {
+                  font-size: 0.5vw !important;
+                  padding: 1vw 0vw 0vw 0vw !important;
+                  margin: auto !important;
+                  font-weight: 400 !important;
+                  width: 68%;
+                }
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/buienradar
+            type: "custom:mini-graph-card"
+
+          - type: custom:button-card
+            template: weather_card
+            card_mod:
+              style: |
+                :host {
+                  left: 12.46%;
+                  top: 85%;
+                  width: 18.78%;
+                  height: 11% !important;
+                  background: none !important;
+                  box-shadow: none !important;
+                  border-style: none;
+                }
+
+  #############################################################################################################################################
+  #                                                                 Energie                                                                   #
+  #############################################################################################################################################
+
+  - title: Energie
+    icon: "mdi:lightning-bolt"
+    path: energie
+    panel: true
+    cards:
+      - type: picture-elements
+        image: /local/ndr_floorplan/floorplan/blurredFloorplan.png
+
+        elements:
+          - type: "custom:layout-card"
+            layout_type: grid
+            layout_options:
+              grid-template-columns: 100%
+              grid-template-rows: 100%
+            style:
+              height: 87%
+              left: 62%
+              top: 50%
+              width: 68%
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: energy-usage-graph
+                    card_mod:
+                      style: |
+                        ha-card {
+                          --ha-card-background: transparent;
+                          border-radius: 15px;
+                          }
+                  - type: horizontal-stack
+                    cards:
+                      - type: vertical-stack
+                        cards:
+                          - type: energy-distribution
+                            card_mod:
+                              style: |
+                                ha-card {
+                                  --ha-card-background: transparent;
+                                  border-radius: 15px;
+                                  }
+                      - type: vertical-stack
+                        cards:
+                          - type: energy-solar-graph
+                            card_mod:
+                              style: |
+                                ha-card {
+                                  --ha-card-background: transparent;
+                                  border-radius: 15px;
+                                  }
+
+          - entity: sensor.time
+            style:
+              color: "rgba(255, 255, 255, 0.7)"
+              font-size: 5.41vw
+              font-weight: 200
+              left: 2.7%
+              letter-spacing: "-0.05vw"
+              max-width: 1px
+              top: 10%
+            tap_action:
+              action: none
+            type: state-label
+
+          - entity: sensor.date_string
+            style:
+              color: "rgba(255, 255, 255, 0.3)"
+              font-size: 1.3vw
+              font-weight: 300
+              left: 18.1%
+              letter-spacing: "-0.05vw"
+              text-align: left
+              top: 17%
+              width: 30%
+            tap_action:
+              action: none
+            type: state-label
+
+          - type: custom:button-card
+            template: nav_button_on
+            name: Energie
+            icon: mdi:lightning-bolt
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/energie
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 26%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Buienradar
+            icon: mdi:weather-cloudy
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/buienradar
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 34%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Camera
+            icon: mdi:cctv
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/camera
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 42%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Agenda
+            icon: mdi:calendar
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/agenda
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 50%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_arrow
+            icon: mdi:chevron-up
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/home
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 58%; width: 8%; }
+                @keyframes bounce {
+                  0%,100% { transform: translateY(0); }
+                  50% { transform: translateY(-4px); }
+                }
+                ha-card { animation: bounce 1.8s ease-in-out infinite; }
+
+          - style:
+              color: white
+              font-size: 1vw
+              font-weight: 300
+              left: 8.8%
+              opacity: 1
+              top: 66%
+              width: 10%
+            text: "Mensen Thuis:"
+            type: "custom:text-element"
+
+          - action: none
+            entity: person.YOUR_NAME
+            state_image:
+              home: /local/ndr_floorplan/people/YOUR_NAME.png
+              not_home: /local/ndr_floorplan/people/YOUR_NAME_gone.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border-radius: 10vw
+              height: 4.5vw
+              left: 5.8%
+              top: 72%
+              width: 4.5vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            entity: person.YOUR_NAME_2
+            state_image:
+              home: /local/ndr_floorplan/people/YOUR_NAME_2.png
+              not_home: /local/ndr_floorplan/people/YOUR_NAME_2_gone.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border-radius: 10vw
+              height: 4.5vw
+              left: 10.8%
+              top: 72%
+              width: 4.5vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            image: /local/ndr_floorplan/floorplan/transparent.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border: "0.1vw dashed rgba(255, 255, 255, 0.3)"
+              border-radius: 10vw
+              height: 4.2vw
+              left: 15.9%
+              top: 72.2%
+              width: 4.2vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            image: /local/ndr_floorplan/floorplan/transparent.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border: "0.1vw dashed rgba(255, 255, 255, 0.3)"
+              border-radius: 10vw
+              height: 4.2vw
+              left: 21.1%
+              top: 72.2%
+              width: 4.2vw
+              -webkit-mask-image: linear-gradient(to right, black 0%, transparent 100%)
+              mask-image: linear-gradient(to right, black 0%, transparent 100%)
+            tap_action:
+              action: none
+            type: image
+
+          - color_thresholds:
+              - color: "#4FC3F7"
+                value: 10
+              - color: "#8BC34A"
+                value: 20
+              - color: "#E53935"
+                value: 25
+            entities:
+              - sensor.YOUR_INDOOR_TEMP
+              - sensor.buienradar_temperature
+            icon: "mdi:home-thermometer-outline"
+            show:
+              icon: false
+              legend: false
+              name: false
+              state: false
+            card_mod:
+              style: |
+                :host {
+                  left: 11.6%;
+                  top:  92.4%;
+                  width: 23.5%;
+                  overflow: hidden;
+                  height: 15%;
+                  background: none !important;
+                  box-shadow: none !important;
+                }
+                ha-card {
+                  background: none !important;
+                  padding: 0 !important;
+                  -webkit-mask-image: linear-gradient(to right, black 50%, transparent 100%);
+                  mask-image: linear-gradient(to right, black 50%, transparent 100%);
+                }
+                .state__time{
+                  font-size:0.9vw !important;
+                  margin-top: 0.2vw;
+                  font-weight: 300 !important;
+                  opacity: 0.4 !important;
+                }
+                .states {
+                  font-size: 0.5vw !important;
+                  padding: 1vw 0vw 0vw 0vw !important;
+                  margin: auto !important;
+                  font-weight: 400 !important;
+                  width: 68%;
+                }
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/buienradar
+            type: "custom:mini-graph-card"
+
+          - type: custom:button-card
+            template: weather_card
+            card_mod:
+              style: |
+                :host {
+                  left: 12.46%;
+                  top: 85%;
+                  width: 18.78%;
+                  height: 11% !important;
+                  background: none !important;
+                  box-shadow: none !important;
+                  border-style: none;
+                }
+
+  #############################################################################################################################################
+  #                                                                 Rain Radar                                                                #
+  #############################################################################################################################################
+
+  - title: Buienradar
+    icon: "mdi:weather-cloudy"
+    path: buienradar
+    panel: true
+    cards:
+      - type: picture-elements
+        image: /local/ndr_floorplan/floorplan/blurredFloorplan.png
+
+        elements:
+          - type: custom:weather-forecast-card
+            entity: weather.buienradar
+            show_current: true
+            show_forecast: true
+            default_forecast: daily
+            tap_action:
+              action: more-info
+            forecast:
+              mode: chart
+              show_sun_times: true
+              use_color_thresholds: true
+              scroll_to_selected: true
+              extra_attribute: wind_bearing
+            forecast_action:
+              tap_action:
+                action: toggle-forecast
+              hold_action:
+                action: select-forecast-attribute
+            current:
+              show_attributes: true
+              secondary_info_attribute: wind_speed
+            card_mod:
+              style: |
+                :host {
+                  left: 61.5%;
+                  top: 35%;
+                  width: 70%;
+                  height: 65%;
+                  overflow: hidden;
+                  background: none !important;
+                  box-shadow: none !important;
+                }
+                ha-card {
+                  height: 100% !important;
+                  width: 100% !important;
+                  background: none !important;
+                  box-shadow: none !important;
+                  border-radius: 1vw;
+                  margin: 0 !important;
+                  padding: 0 !important;
+                }
+
+          - type: custom:buien-rain-forecast
+            long: YOUR_LONGITUDE   # e.g. 4.8945
+            lat: YOUR_LATITUDE     # e.g. 52.3667
+            lineColor: "rgba(89, 160, 238, 1)"
+            fillColor: "rgba(89, 160, 238, 0.2)"
+            update_interval: 5
+            icon: "mdi:weather-rainy"
+            card_mod:
+              style: |
+                :host {
+                  left: 61.5%;
+                  top: 95%;
+                  width: 75%;
+                  height: 45%;
+                  overflow: hidden;
+                  background: none !important;
+                  box-shadow: none !important;
+                }
+                ha-card {
+                  height: 100% !important;
+                  width: 100% !important;
+                  background: none !important;
+                  box-shadow: none !important;
+                  border-radius: 1vw;
+                  margin: 0 !important;
+                  padding: 0 !important;
+                }
+
+          - entity: sensor.time
+            style:
+              color: "rgba(255, 255, 255, 0.7)"
+              font-size: 5.41vw
+              font-weight: 200
+              left: 2.7%
+              letter-spacing: "-0.05vw"
+              max-width: 1px
+              top: 10%
+            tap_action:
+              action: none
+            type: state-label
+
+          - entity: sensor.date_string
+            style:
+              color: "rgba(255, 255, 255, 0.3)"
+              font-size: 1.3vw
+              font-weight: 300
+              left: 18.1%
+              letter-spacing: "-0.05vw"
+              text-align: left
+              top: 17%
+              width: 30%
+            tap_action:
+              action: none
+            type: state-label
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Energie
+            icon: mdi:lightning-bolt
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/energie
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 26%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_on
+            name: Buienradar
+            icon: mdi:weather-cloudy
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/buienradar
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 34%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Camera
+            icon: mdi:cctv
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/camera
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 42%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Agenda
+            icon: mdi:calendar
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/agenda
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 50%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_arrow
+            icon: mdi:chevron-up
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/home
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 58%; width: 8%; }
+                @keyframes bounce {
+                  0%,100% { transform: translateY(0); }
+                  50% { transform: translateY(-4px); }
+                }
+                ha-card { animation: bounce 1.8s ease-in-out infinite; }
+
+          - style:
+              color: white
+              font-size: 1vw
+              font-weight: 300
+              left: 8.8%
+              opacity: 1
+              top: 66%
+              width: 10%
+            text: "Mensen Thuis:"
+            type: "custom:text-element"
+
+          - action: none
+            entity: person.YOUR_NAME
+            state_image:
+              home: /local/ndr_floorplan/people/YOUR_NAME.png
+              not_home: /local/ndr_floorplan/people/YOUR_NAME_gone.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border-radius: 10vw
+              height: 4.5vw
+              left: 5.8%
+              top: 72%
+              width: 4.5vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            entity: person.YOUR_NAME_2
+            state_image:
+              home: /local/ndr_floorplan/people/YOUR_NAME_2.png
+              not_home: /local/ndr_floorplan/people/YOUR_NAME_2_gone.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border-radius: 10vw
+              height: 4.5vw
+              left: 10.8%
+              top: 72%
+              width: 4.5vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            image: /local/ndr_floorplan/floorplan/transparent.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border: "0.1vw dashed rgba(255, 255, 255, 0.3)"
+              border-radius: 10vw
+              height: 4.2vw
+              left: 15.9%
+              top: 72.2%
+              width: 4.2vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            image: /local/ndr_floorplan/floorplan/transparent.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border: "0.1vw dashed rgba(255, 255, 255, 0.3)"
+              border-radius: 10vw
+              height: 4.2vw
+              left: 21.1%
+              top: 72.2%
+              width: 4.2vw
+              -webkit-mask-image: linear-gradient(to right, black 0%, transparent 100%)
+              mask-image: linear-gradient(to right, black 0%, transparent 100%)
+            tap_action:
+              action: none
+            type: image
+
+          - color_thresholds:
+              - color: "#4FC3F7"
+                value: 10
+              - color: "#8BC34A"
+                value: 20
+              - color: "#E53935"
+                value: 25
+            entities:
+              - sensor.YOUR_INDOOR_TEMP
+              - sensor.buienradar_temperature
+            icon: "mdi:home-thermometer-outline"
+            show:
+              icon: false
+              legend: false
+              name: false
+              state: false
+            card_mod:
+              style: |
+                :host {
+                  left: 11.6%;
+                  top:  92.4%;
+                  width: 23.5%;
+                  overflow: hidden;
+                  height: 15%;
+                  background: none !important;
+                  box-shadow: none !important;
+                }
+                ha-card {
+                  background: none !important;
+                  padding: 0 !important;
+                  -webkit-mask-image: linear-gradient(to right, black 50%, transparent 100%);
+                  mask-image: linear-gradient(to right, black 50%, transparent 100%);
+                }
+                .state__time{
+                  font-size:0.9vw !important;
+                  margin-top: 0.2vw;
+                  font-weight: 300 !important;
+                  opacity: 0.4 !important;
+                }
+                .states {
+                  font-size: 0.5vw !important;
+                  padding: 1vw 0vw 0vw 0vw !important;
+                  margin: auto !important;
+                  font-weight: 400 !important;
+                  width: 68%;
+                }
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/buienradar
+            type: "custom:mini-graph-card"
+
+          - type: custom:button-card
+            template: weather_card
+            card_mod:
+              style: |
+                :host {
+                  left: 12.46%;
+                  top: 85%;
+                  width: 18.78%;
+                  height: 11% !important;
+                  background: none !important;
+                  box-shadow: none !important;
+                  border-style: none;
+                }
+
+  #############################################################################################################################################
+  #                                                                 Camera                                                                    #
+  #############################################################################################################################################
+
+  - title: Camera
+    icon: "mdi:cctv"
+    path: camera
+    panel: true
+    cards:
+      - type: picture-elements
+        image: /local/ndr_floorplan/floorplan/blurredFloorplan.png
+
+        elements:
+          - type: "custom:layout-card"
+            layout_type: grid
+            layout_options:
+              grid-template-columns: 100%
+              grid-template-rows: 100%
+            style:
+              height: 87%
+              left: 62%
+              top: 50%
+              width: 68%
+            cards:
+              - type: vertical-stack
+                cards:
+                  - type: horizontal-stack
+                    cards:
+                      - type: vertical-stack
+                        cards:
+                          - type: "custom:webrtc-camera"
+                            url: "camera-1"   # replace with your camera stream name
+                            mode: webrtc
+                            media: video
+                            style: ".mode {display: none}"
+                            card_mod:
+                              style: |
+                                ha-card {
+                                  border-radius: 15px;
+                                  }
+                      - type: vertical-stack
+                        cards:
+                          - type: "custom:webrtc-camera"
+                            url: "camera-2"   # replace with your camera stream name
+                            mode: webrtc
+                            media: video
+                            style: ".mode {display: none}"
+                            card_mod:
+                              style: |
+                                ha-card {
+                                  border-radius: 15px;
+                                  }
+                  - type: horizontal-stack
+                    cards:
+                      - type: vertical-stack
+                        cards:
+                          - type: "custom:webrtc-camera"
+                            url: "camera-3"   # replace with your camera stream name
+                            mode: webrtc
+                            media: video
+                            style: ".mode {display: none}"
+                            card_mod:
+                              style: |
+                                ha-card {
+                                  border-radius: 15px;
+                                  }
+                      - type: vertical-stack
+                        cards:
+                          - type: "custom:webrtc-camera"
+                            url: "camera-4"   # replace with your camera stream name
+                            style: ".mode {display: none}"
+                            card_mod:
+                              style: |
+                                ha-card {
+                                  border-radius: 15px;
+                                  }
+
+          - entity: sensor.time
+            style:
+              color: "rgba(255, 255, 255, 0.7)"
+              font-size: 5.41vw
+              font-weight: 200
+              left: 2.7%
+              letter-spacing: "-0.05vw"
+              max-width: 1px
+              top: 10%
+            tap_action:
+              action: none
+            type: state-label
+
+          - entity: sensor.date_string
+            style:
+              color: "rgba(255, 255, 255, 0.3)"
+              font-size: 1.3vw
+              font-weight: 300
+              left: 18.1%
+              letter-spacing: "-0.05vw"
+              text-align: left
+              top: 17%
+              width: 30%
+            tap_action:
+              action: none
+            type: state-label
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Energie
+            icon: mdi:lightning-bolt
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/energie
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 26%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Buienradar
+            icon: mdi:weather-cloudy
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/buienradar
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 34%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_on
+            name: Camera
+            icon: mdi:cctv
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/camera
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 42%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Agenda
+            icon: mdi:calendar
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/agenda
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 50%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_arrow
+            icon: mdi:chevron-up
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/home
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 58%; width: 8%; }
+                @keyframes bounce {
+                  0%,100% { transform: translateY(0); }
+                  50% { transform: translateY(-4px); }
+                }
+                ha-card { animation: bounce 1.8s ease-in-out infinite; }
+
+          - style:
+              color: white
+              font-size: 1vw
+              font-weight: 300
+              left: 8.8%
+              opacity: 1
+              top: 66%
+              width: 10%
+            text: "Mensen Thuis:"
+            type: "custom:text-element"
+
+          - action: none
+            entity: person.YOUR_NAME
+            state_image:
+              home: /local/ndr_floorplan/people/YOUR_NAME.png
+              not_home: /local/ndr_floorplan/people/YOUR_NAME_gone.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border-radius: 10vw
+              height: 4.5vw
+              left: 5.8%
+              top: 72%
+              width: 4.5vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            entity: person.YOUR_NAME_2
+            state_image:
+              home: /local/ndr_floorplan/people/YOUR_NAME_2.png
+              not_home: /local/ndr_floorplan/people/YOUR_NAME_2_gone.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border-radius: 10vw
+              height: 4.5vw
+              left: 10.8%
+              top: 72%
+              width: 4.5vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            image: /local/ndr_floorplan/floorplan/transparent.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border: "0.1vw dashed rgba(255, 255, 255, 0.3)"
+              border-radius: 10vw
+              height: 4.2vw
+              left: 15.9%
+              top: 72.2%
+              width: 4.2vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            image: /local/ndr_floorplan/floorplan/transparent.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border: "0.1vw dashed rgba(255, 255, 255, 0.3)"
+              border-radius: 10vw
+              height: 4.2vw
+              left: 21.1%
+              top: 72.2%
+              width: 4.2vw
+              -webkit-mask-image: linear-gradient(to right, black 0%, transparent 100%)
+              mask-image: linear-gradient(to right, black 0%, transparent 100%)
+            tap_action:
+              action: none
+            type: image
+
+          - color_thresholds:
+              - color: "#4FC3F7"
+                value: 10
+              - color: "#8BC34A"
+                value: 20
+              - color: "#E53935"
+                value: 25
+            entities:
+              - sensor.YOUR_INDOOR_TEMP
+              - sensor.buienradar_temperature
+            icon: "mdi:home-thermometer-outline"
+            show:
+              icon: false
+              legend: false
+              name: false
+              state: false
+            card_mod:
+              style: |
+                :host {
+                  left: 11.6%;
+                  top:  92.4%;
+                  width: 23.5%;
+                  overflow: hidden;
+                  height: 15%;
+                  background: none !important;
+                  box-shadow: none !important;
+                }
+                ha-card {
+                  background: none !important;
+                  padding: 0 !important;
+                  -webkit-mask-image: linear-gradient(to right, black 50%, transparent 100%);
+                  mask-image: linear-gradient(to right, black 50%, transparent 100%);
+                }
+                .state__time{
+                  font-size:0.9vw !important;
+                  margin-top: 0.2vw;
+                  font-weight: 300 !important;
+                  opacity: 0.4 !important;
+                }
+                .states {
+                  font-size: 0.5vw !important;
+                  padding: 1vw 0vw 0vw 0vw !important;
+                  margin: auto !important;
+                  font-weight: 400 !important;
+                  width: 68%;
+                }
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/buienradar
+            type: "custom:mini-graph-card"
+
+          - type: custom:button-card
+            template: weather_card
+            card_mod:
+              style: |
+                :host {
+                  left: 12.46%;
+                  top: 85%;
+                  width: 18.78%;
+                  height: 11% !important;
+                  background: none !important;
+                  box-shadow: none !important;
+                  border-style: none;
+                }
+
+  #############################################################################################################################################
+  #                                                                 Calendar                                                                  #
+  #############################################################################################################################################
+
+  - title: Agenda
+    icon: "mdi:calendar"
+    path: agenda
+    panel: true
+    cards:
+      - type: picture-elements
+        image: /local/ndr_floorplan/floorplan/blurredFloorplan.png
+
+        elements:
+          - type: "custom:layout-card"
+            layout_type: grid
+            layout_options:
+              grid-template-columns: 100%
+              grid-template-rows: 100%
+            style:
+              height: 87%
+              left: 62%
+              top: 50%
+              width: 68%
+            cards:
+              - type: custom:calendar-card-pro
+                entities:
+                  - YOUR_CALENDAR_ENTITY   # e.g. calendar.your_name_gmail_com
+                days_to_show: 30
+                compact_days_to_show: 7
+                compact_events_to_show: 7
+                month_separator_width: 1px
+                event_background_opacity: -35
+                time_24h: true
+                weather:
+                  position: date
+                  date:
+                    show_conditions: true
+                    show_high_temp: true
+                    show_low_temp: false
+                    icon_size: 14px
+                    font_size: 12px
+                    color: var(--primary-text-color)
+                  event:
+                    show_conditions: true
+                    show_temp: true
+                    icon_size: 14px
+                    font_size: 12px
+                    color: var(--primary-text-color)
+                  entity: weather.pirateweather
+                card_mod:
+                  style: |
+                    ha-card {
+                      border-radius: 15px;
+                    }
+
+          - entity: sensor.time
+            style:
+              color: "rgba(255, 255, 255, 0.7)"
+              font-size: 5.41vw
+              font-weight: 200
+              left: 2.7%
+              letter-spacing: "-0.05vw"
+              max-width: 1px
+              top: 10%
+            tap_action:
+              action: none
+            type: state-label
+
+          - entity: sensor.date_string
+            style:
+              color: "rgba(255, 255, 255, 0.3)"
+              font-size: 1.3vw
+              font-weight: 300
+              left: 18.1%
+              letter-spacing: "-0.05vw"
+              text-align: left
+              top: 17%
+              width: 30%
+            tap_action:
+              action: none
+            type: state-label
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Energie
+            icon: mdi:lightning-bolt
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/energie
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 26%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Buienradar
+            icon: mdi:weather-cloudy
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/buienradar
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 34%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_off
+            name: Camera
+            icon: mdi:cctv
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/camera
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 42%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_button_on
+            name: Agenda
+            icon: mdi:calendar
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/agenda
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 50%; width: 19.25%; }
+
+          - type: custom:button-card
+            template: nav_arrow
+            icon: mdi:chevron-up
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/home
+            card_mod:
+              style: |
+                :host { left: 11.7%; top: 58%; width: 8%; }
+                @keyframes bounce {
+                  0%,100% { transform: translateY(0); }
+                  50% { transform: translateY(-4px); }
+                }
+                ha-card { animation: bounce 1.8s ease-in-out infinite; }
+
+          - style:
+              color: white
+              font-size: 1vw
+              font-weight: 300
+              left: 8.8%
+              opacity: 1
+              top: 66%
+              width: 10%
+            text: "Mensen Thuis:"
+            type: "custom:text-element"
+
+          - action: none
+            entity: person.YOUR_NAME
+            state_image:
+              home: /local/ndr_floorplan/people/YOUR_NAME.png
+              not_home: /local/ndr_floorplan/people/YOUR_NAME_gone.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border-radius: 10vw
+              height: 4.5vw
+              left: 5.8%
+              top: 72%
+              width: 4.5vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            entity: person.YOUR_NAME_2
+            state_image:
+              home: /local/ndr_floorplan/people/YOUR_NAME_2.png
+              not_home: /local/ndr_floorplan/people/YOUR_NAME_2_gone.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border-radius: 10vw
+              height: 4.5vw
+              left: 10.8%
+              top: 72%
+              width: 4.5vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            image: /local/ndr_floorplan/floorplan/transparent.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border: "0.1vw dashed rgba(255, 255, 255, 0.3)"
+              border-radius: 10vw
+              height: 4.2vw
+              left: 15.9%
+              top: 72.2%
+              width: 4.2vw
+            tap_action:
+              action: none
+            type: image
+
+          - action: none
+            image: /local/ndr_floorplan/floorplan/transparent.png
+            style:
+              background-color: "rgba(255, 255, 255, 0.0)"
+              border: "0.1vw dashed rgba(255, 255, 255, 0.3)"
+              border-radius: 10vw
+              height: 4.2vw
+              left: 21.1%
+              top: 72.2%
+              width: 4.2vw
+              -webkit-mask-image: linear-gradient(to right, black 0%, transparent 100%)
+              mask-image: linear-gradient(to right, black 0%, transparent 100%)
+            tap_action:
+              action: none
+            type: image
+
+          - color_thresholds:
+              - color: "#4FC3F7"
+                value: 10
+              - color: "#8BC34A"
+                value: 20
+              - color: "#E53935"
+                value: 25
+            entities:
+              - sensor.YOUR_INDOOR_TEMP
+              - sensor.buienradar_temperature
+            icon: "mdi:home-thermometer-outline"
+            show:
+              icon: false
+              legend: false
+              name: false
+              state: false
+            card_mod:
+              style: |
+                :host {
+                  left: 11.6%;
+                  top:  92.4%;
+                  width: 23.5%;
+                  overflow: hidden;
+                  height: 15%;
+                  background: none !important;
+                  box-shadow: none !important;
+                }
+                ha-card {
+                  background: none !important;
+                  padding: 0 !important;
+                  -webkit-mask-image: linear-gradient(to right, black 50%, transparent 100%);
+                  mask-image: linear-gradient(to right, black 50%, transparent 100%);
+                }
+                .state__time{
+                  font-size:0.9vw !important;
+                  margin-top: 0.2vw;
+                  font-weight: 300 !important;
+                  opacity: 0.4 !important;
+                }
+                .states {
+                  font-size: 0.5vw !important;
+                  padding: 1vw 0vw 0vw 0vw !important;
+                  margin: auto !important;
+                  font-weight: 400 !important;
+                  width: 68%;
+                }
+            tap_action:
+              action: navigate
+              navigation_path: /ndr-floorplan/buienradar
+            type: "custom:mini-graph-card"
+
+          - type: custom:button-card
+            template: weather_card
+            card_mod:
+              style: |
+                :host {
+                  left: 12.46%;
+                  top: 85%;
+                  width: 18.78%;
+                  height: 11% !important;
+                  background: none !important;
+                  box-shadow: none !important;
+                  border-style: none;
+                }
