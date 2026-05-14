@@ -8,9 +8,7 @@ A full-screen tablet dashboard for Home Assistant built on `picture-elements` wi
 
 ## Preview
 
-<!-- Add GIF or video here -->
-> 📹 *Screenshot / GIF coming soon*
-
+![Dashboard Preview](assets/preview.gif)
 ---
 
 ## Features
