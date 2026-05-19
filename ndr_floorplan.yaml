@@ -364,7 +364,7 @@ views:
                 # Light overlay — replace with your own light entity
                 - action: none
                   entity: light.YOUR_KITCHEN_LIGHT
-                  image: /local/ndr_floorplan/floorplan/interior-night.png
+                  image: /local/ndr_floorplan/floorplan/kitchen_on.png
                   style:
                     filter: >-
                       ${ "hue-rotate(" + (states['light.YOUR_KITCHEN_LIGHT'].attributes.hs_color
